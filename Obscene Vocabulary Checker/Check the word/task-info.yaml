@@ -1,0 +1,90 @@
+type: remote_edu
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main()\
+    \ {\n\t// reading file name input\n\tvar fileName string\n\tfmt.Scan(&fileName)\n\
+    \n\t// opening file\n\tfile, err := os.Open(fileName)\n\tif err != nil {\n\t\t\
+    fmt.Println(err)\n\t}\n\tdefer file.Close()\n\n\t// create scanner and split by\
+    \ words\n\tscanner := bufio.NewScanner(file)\n\tscanner.Split(bufio.ScanWords)\n\
+    \n\t// printing each words\n\tfor scanner.Scan() {\n\t\tfmt.Println(scanner.Text())\n\
+    \t}\n\tif err := scanner.Err(); err != nil {\n\t\tfmt.Println(err)\n\t}\n}"
+  learner_created: false
+- name: tests.py
+  visible: false
+  text: |
+    from typing import List
+
+    from hstest import CheckResult, dynamic_test, StageTest, TestCase, TestedProgram
+
+    FILENAME = 'forbidden_words.txt'
+    words = 'awful\natrocious\nharsh\ncrummy\ndreadful\nlousy'
+
+    T = 'True'
+    F = 'False'
+    MSG_ERROR_NOT_BAD = 'This word does not belong to bad words'
+    MSG_ERROR_BAD = 'This word belongs to bad words'
+
+
+    class CheckerStage2Test(StageTest):
+        def da_test(self, word, flag, msg):
+            pr = TestedProgram()
+            pr.start()
+            pr.execute(FILENAME)
+            out = pr.execute(word).strip()
+            if out.lower() != flag.lower():
+                return CheckResult.wrong(msg)
+            return CheckResult.correct()
+
+        def generate(self) -> List[TestCase]:
+            return [
+                TestCase(dynamic_testing=i, files={FILENAME: words}) for i in [
+                    self.test1, self.test2, self.test3, self.test4, self.test5, self.test6,
+                    self.test7, self.test8, self.test9, self.test10, self.test11, self.test12,
+                ]
+            ]
+
+        def test1(self):
+            return self.da_test('awful', T, MSG_ERROR_BAD)
+
+        def test2(self):
+            return self.da_test('HARSH', T, MSG_ERROR_BAD)
+
+        def test3(self):
+            return self.da_test('awesome', F, MSG_ERROR_NOT_BAD)
+
+        def test4(self):
+            return self.da_test('LoUsE', F, MSG_ERROR_NOT_BAD)
+
+        def test5(self):
+            return self.da_test('crumble', F, MSG_ERROR_NOT_BAD)
+
+        def test6(self):
+            return self.da_test('dreadlocks', F, MSG_ERROR_NOT_BAD)
+
+        def test7(self):
+            return self.da_test('DREadFUL', T, MSG_ERROR_BAD)
+
+        def test8(self):
+            return self.da_test('crummy', T, MSG_ERROR_BAD)
+
+        def test9(self):
+            return self.da_test('atrium', F, MSG_ERROR_NOT_BAD)
+
+        def test10(self):
+            return self.da_test('lousy', T, MSG_ERROR_BAD)
+
+        def test11(self):
+            return self.da_test('atRocious', T, MSG_ERROR_BAD)
+
+        def test12(self):
+            return self.da_test('MARSH', F, MSG_ERROR_NOT_BAD)
+
+
+    if __name__ == '__main__':
+        CheckerStage2Test().run_tests()
+  learner_created: false
+feedback_link: https://hyperskill.org/projects/201/stages/999/implement#comment
+check_profile: hyperskill_go
+status: Solved
+record: 1

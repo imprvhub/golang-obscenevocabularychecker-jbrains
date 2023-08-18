@@ -1,0 +1,15 @@
+type: hyperskill
+title: Obscene Vocabulary Checker
+language: English
+summary: "<p>Today, many popular platforms on the Internet use artificial intelligence\
+  \ to filter out offensive comments and posts. Building such a filter\_requires a\
+  \ lot of skill and knowledge. There is another way to hide\_obscene words in the\
+  \ comments. Of course, it is not as effective as artificial intelligence, but it\
+  \ will do the job. The Obscene Vocabulary Checker\_is a simple console program that\
+  \ finds certain words and replaces them with ******.</p><br/><br/>Learn more at\
+  \ <a href=\"https://hyperskill.org/projects/201?utm_source=ide&utm_medium=ide&utm_campaign=ide&utm_content=project-card\"\
+  >https://hyperskill.org/projects/201</a>"
+programming_language: Go
+content:
+- Obscene Vocabulary Checker
+mode: Study

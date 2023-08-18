@@ -1,0 +1,81 @@
+type: remote_edu
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport (\n\t\"bufio\"\n\t\"fmt\"\n\t\"os\"\n\t\"strings\"\
+    \n\t\"unicode/utf8\"\n)\n\nfunc main() {\n\t// reading file name input\n\tvar\
+    \ fileName string\n\tfmt.Scan(&fileName)\n\n\t// opening file\n\tfile, err :=\
+    \ os.Open(fileName)\n\tif err != nil {\n\t\tfmt.Println(err)\n\t}\n\tdefer file.Close()\n\
+    \n\t// create scanner and split by words\n\tscanner := bufio.NewScanner(file)\n\
+    \tscanner.Split(bufio.ScanWords)\n\n\t// putting forbidden words to set (map)\n\
+    \ttabooMap := make(map[string]struct{})\n\tfor scanner.Scan() {\n\t\t// add to\
+    \ set if it doesn't exist\n\t\ttabooWord := strings.ToLower(scanner.Text())\n\t\
+    \tif _, ok := tabooMap[tabooWord]; !ok {\n\t\t\ttabooMap[tabooWord] = struct{}{}\n\
+    \t\t}\n\t}\n\tif err := scanner.Err(); err != nil {\n\t\tfmt.Println(err)\n\t\
+    }\n\n\tvar word string\n\tfmt.Scan(&word)\n\tfor word != \"exit\" {\n\t\t// if\
+    \ word is a tabooWord, censor it\n\t\tif _, ok := tabooMap[strings.ToLower(word)];\
+    \ ok {\n\t\t\tword = strings.Repeat(\"*\", utf8.RuneCountInString(word))\n\t\t\
+    }\n\t\tfmt.Println(word)\n\n\t\tfmt.Scan(&word)\n\t}\n\n\tfmt.Println(\"Bye!\"\
+    )\n}"
+  learner_created: false
+- name: tests.py
+  visible: false
+  text: |
+    from typing import List
+
+    from hstest import CheckResult, dynamic_test, StageTest, TestCase, TestedProgram
+
+    FILENAME = 'forbidden_words.txt'
+    words = 'awful\natrocious\nharsh\ncrummy\ndreadful\nlousy'
+
+    T = True
+    F = False
+    MSG_CENS = 'Bad words should be censored, according to their length'
+    MSG_NO_CENS = 'No need to censor non-obscene words'
+    WORDS_TO_CHECK = (('awful', T), ('scrumble', F), ('HARSH', T), ('scream', F),
+                      ('atrOCIOus', T), ('LOSSLESS', F), ('dreadful', T), ('crumpet', F),
+                      ('cRuMmy', T), ('hard', F), ('lousy', T), ('dream', F))
+
+
+    class CheckerStage3Test(StageTest):
+        def exemplary_output(self, word, flag):
+            if flag:
+                cens = '*' * len(word)
+                return cens
+            else:
+                return word
+
+        def generate(self) -> List[TestCase]:
+            return [
+                TestCase(dynamic_testing=self.test1, files={FILENAME: words})
+            ]
+
+        def test1(self):
+
+            pr = TestedProgram()
+            pr.start()
+            pr.execute(FILENAME)
+            for pair in WORDS_TO_CHECK:
+                word, flag = pair
+                out = pr.execute(word).strip()
+                if out != self.exemplary_output(word, flag):
+                    if flag:
+                        return CheckResult.wrong(MSG_CENS)
+                    else:
+                        return CheckResult.wrong(MSG_NO_CENS)
+            out = pr.execute('exit')
+            if 'bye' not in out.strip().lower():
+                return CheckResult.wrong('The program should be polite')
+            return CheckResult.correct()
+
+
+    if __name__ == '__main__':
+        CheckerStage3Test().run_tests()
+  learner_created: false
+feedback_link: https://hyperskill.org/projects/201/stages/1001/implement#comment
+check_profile: hyperskill_go
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Fri, 18 Aug 2023 05:11:28 UTC"
+record: 3

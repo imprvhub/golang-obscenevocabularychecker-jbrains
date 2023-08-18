@@ -1,0 +1,30 @@
+<div class="step-text">
+<h5 id="description">Description</h5>
+<p>Now, your program should read the words from the standard input, one at a time, and replace them with <code class="java">******</code> if they are on the list of the taboo words. Note that the number of <code class="java">*</code> corresponds to the number of characters in a certain taboo word. See the example below.</p>
+<h5 id="objectives">Objectives</h5>
+<ul>
+<li>Read the name of the file that contains taboo words from the user input;</li>
+<li>Read the file (back-up link is: <a href="https://stepik.org/media/attachments/lesson/566375/forbidden_words.txt" rel="noopener noreferrer nofollow" target="_blank">words</a>.);</li>
+<li>Read words from the input. If the word is taboo, replace it with <code class="java">*</code> , according to the length of the words, and print the result, otherwise print the word. Repeat this until the <code class="java">exit</code> command is entered;</li>
+<li>When the program receives the <code class="java">exit</code> command, print <code class="java">Bye!</code> and exit the program.</li>
+</ul>
+<h5 id="example">Example</h5>
+<p>The greater-than symbol followed by a space (<code class="java">&gt; </code>) represents the user input. Note that it's not part of the input.</p>
+<p><strong>Example 1:</strong></p>
+<p><em>The forbidden_words.txt contents:<br/>
+disgusting<br/>
+unpleasant<br/>
+ugly<br/>
+bad</em></p>
+<pre><code class="language-no-highlight">&gt; forbidden_words.txt
+&gt; bad
+***
+&gt; BAD
+***
+&gt; Badge
+Badge
+&gt; disgusting
+**********
+&gt; exit
+Bye!</code></pre>
+</div>
